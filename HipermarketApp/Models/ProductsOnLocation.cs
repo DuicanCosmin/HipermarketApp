@@ -17,5 +17,12 @@ namespace HipermarketApp.Models
         public int Quantity { get; set; }
 
         public int MinQuantity { get; set; }
+
+        public virtual Product Product { get; set; }
+        public virtual Location Location { get; set; }
+
+        
+
+
     }
 }

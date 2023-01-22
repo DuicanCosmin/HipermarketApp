@@ -22,5 +22,7 @@ namespace HipermarketApp.Models
         public virtual Category Category { get; set; }
 
         public virtual ICollection<Supplier>Suppliers { get; set; }
+
+        public virtual ICollection<ProductsOnLocation> LocationProducts { get; set; }
     }
 }

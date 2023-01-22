@@ -17,12 +17,29 @@ namespace HipermarketApp.Data
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {   
+            
+
+
             modelBuilder.Entity<Product>()
                 .Property(p => p.SafetyStock)
                 .HasDefaultValue(0);
 
             modelBuilder.Entity<ProductsSupplierDetails>().HasKey(x => new { x.ProductID, x.SupplierID });
+
+            modelBuilder.Entity<ProductsOnLocation>().HasKey(x => new { x.ProductId, x.LocationId });
+
+            modelBuilder.Entity<ProductsOnLocation>()
+                            .HasOne(p => p.Product)
+                            .WithMany(l => l.LocationProducts)
+                            .HasForeignKey(k => k.ProductId)
+                            .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ProductsOnLocation>()
+                            .HasOne(p => p.Location)
+                            .WithMany(l=>l.LocationProducts)
+                            .HasForeignKey(k => k.LocationId)
+                            .OnDelete(DeleteBehavior.NoAction);
         }
 
 

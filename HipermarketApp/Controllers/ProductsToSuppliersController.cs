@@ -22,27 +22,27 @@ namespace HipermarketApp.Controllers
         // GET: ProductsToSuppliers
         public async Task<IActionResult> Index()
         {       
-              var hmAp = _context.ProductsSupplierDetails.Include(x => x.Product).Include(x => x.SupplierID);
+              var hmAp = _context.ProductsSupplierDetails.Include(x => x.Product).Include(x => x.Supplier);
               return View(await hmAp.ToListAsync());
         }
 
         // GET: ProductsToSuppliers/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.ProductsSupplierDetails == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null || _context.ProductsSupplierDetails == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var productsSupplierDetails = await _context.ProductsSupplierDetails
-                .FirstOrDefaultAsync(m => m.ProductID == id);
-            if (productsSupplierDetails == null)
-            {
-                return NotFound();
-            }
+        //    var productsSupplierDetails = await _context.ProductsSupplierDetails
+        //        .FirstOrDefaultAsync(m => m.ProductID == id);
+        //    if (productsSupplierDetails == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(productsSupplierDetails);
-        }
+        //    return View(productsSupplierDetails);
+        //}
 
         // GET: ProductsToSuppliers/Create
         public IActionResult Create()
