@@ -1,8 +1,11 @@
 using HipermarketApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<HipermarketAppContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("HipermarketAppContext") ?? throw new InvalidOperationException("Connection string 'HipermarketAppContext' not found.")));
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

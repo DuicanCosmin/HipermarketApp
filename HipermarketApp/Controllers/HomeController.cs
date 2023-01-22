@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace HipermarketApp.Controllers
 {
     public class HomeController : Controller
@@ -13,11 +15,13 @@ namespace HipermarketApp.Controllers
             _logger = logger;
         }
 
+        
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Privacy()
         {
             return View();
@@ -28,5 +32,12 @@ namespace HipermarketApp.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult About()
+        {
+            return View();
+        }
+
+        //var ZoneList = _context.Zones.Include(x=>x.Category).Cast<ZoneVM>().ToList();
     }
 }

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<HipermarketApp.Models.ProductsSupplierDetails>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PurchasePrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeadTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchasePrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeadTime)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  id1=item.ProductID , id2=item.SupplierID  }) |
+                @Html.ActionLink("Details", "Details", new {  id1=item.ProductID,id2=item.SupplierID  }) |
+                @Html.ActionLink("Delete", "Delete", new {  id1=item.ProductID,id2=item.SupplierID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,8 +1,43 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Hipermarket app";
 }
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <P1 >Category and location managment</P1>
+    <ul>
+        <li >
+             <a href="@Url.Action("Index", "Categories")">Categories</a>
+        </li>
+        <li>
+            <a href="@Url.Action("Index", "Zones")">Zones</a>
+            
+        </li>
+        <li>
+            <a href="@Url.Action("Index", "Locations")">Locations</a>
+        </li>
+    </ul>
+</div>
+<div>
+      <p1 >Suppliers managment</p1>
+    <ul>
+        <li >
+            <a href="@Url.Action("Index", "Suppliers")">Suppliers</a>
+        </li>
+        <li >
+            <a href="@Url.Action("Index", "Suppliers")">Orders</a>
+        </li>
+    </ul>
+</div>
+
+<div>
+      <p1 >Product managment</p1>
+    <ul>
+        <li >
+            <a href="@Url.Action("Index", "Products")">Products</a>
+        </li>
+        <li >
+            <a href="@Url.Action("Index", "ProductsToSuppliers")">Product-Supplier</a>
+        </li>
+    </ul>
 </div>
