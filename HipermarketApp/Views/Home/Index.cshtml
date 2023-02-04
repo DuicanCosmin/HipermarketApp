@@ -1,9 +1,15 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
     ViewData["Title"] = "Hipermarket app";
 }
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<div>
+@if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Stock officer")))
+{
+    <div>
     <P1 >Category and location managment</P1>
     <ul>
         <li >
@@ -18,31 +24,38 @@
         </li>
     </ul>
 </div>
-<div>
-      <p1 >Suppliers managment</p1>
-    <ul>
-        <li >
-            <a href="@Url.Action("Index", "Suppliers")">Suppliers</a>
-        </li>
-        <li >
-            <a href="@Url.Action("Index", "Suppliers")">Orders</a>
-        </li>
-    </ul>
-</div>
-
-<div>
-      <p1 >Product managment</p1>
-    <ul>
-        <li >
-            <a href="@Url.Action("Index", "Products")">Products</a>
-        </li>
-        <li >
-            <a href="@Url.Action("Index", "ProductsToSuppliers")">Product-Supplier</a>
-        </li>
-    </ul>
-</div>
-
-<div>
+}
+@if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Supplier officer")))
+{
+    <div>
+        <p1 >Suppliers managment</p1>
+        <ul>
+            <li >
+                <a href="@Url.Action("Index", "Suppliers")">Suppliers</a>
+            </li>
+            <li >
+                <a href="@Url.Action("Index", "Suppliers")">Orders</a>
+            </li>
+        </ul>
+    </div>
+}
+@if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin")||User.IsInRole("Product officer")))
+{
+    <div>
+        <p1 >Product managment</p1>
+        <ul>
+            <li >
+                <a href="@Url.Action("Index", "Products")">Products</a>
+            </li>
+            <li >
+                <a href="@Url.Action("Index", "ProductsToSuppliers")">Product-Supplier</a>
+            </li>
+        </ul>
+    </div>
+}
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+  <div>
       <p1 >Admin panel</p1>
     <ul>
         <li >
@@ -51,4 +64,6 @@
 
     </ul>
 </div>
+
+}
 
