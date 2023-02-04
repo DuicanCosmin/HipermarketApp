@@ -22,7 +22,7 @@ namespace HipermarketApp.Controllers
             _context = context;
         }
 
-        // GET: Zones
+        // GET: Zones abc
         public async Task<IActionResult> Index()
         {   
             var ZoneList = await _context.Zones.Include(z => z.Category).ToListAsync();
