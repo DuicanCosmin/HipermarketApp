@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HipermarketApp.Data;
 using HipermarketApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HipermarketApp.Controllers
 {
+    [Authorize]
     public class LocationsController : Controller
     {
         private readonly HipermarketAppContext _context;

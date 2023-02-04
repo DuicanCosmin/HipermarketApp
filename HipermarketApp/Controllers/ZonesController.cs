@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using HipermarketApp.Data;
 using HipermarketApp.ViewModels;
 using HipermarketApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HipermarketApp.Controllers
 {
+    [Authorize]
     public class ZonesController : Controller
     {
         private readonly HipermarketAppContext _context;

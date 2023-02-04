@@ -12,10 +12,19 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.Configure<IdentityOptions>(options => options.Password.RequiredLength = 2) ;
+builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => 
+                                     {
+                                         options.SignIn.RequireConfirmedAccount = false;
+                                         options.Password.RequiredLength = 8;
+                                         options.Password.RequireNonAlphanumeric = false;
+                                         }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders(); 
 builder.Services.AddControllersWithViews();
+builder.Services.AddMvc();
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+//    .AddEntityFrameworkStores<ApplicationDbContext>()
+
+
 
 var app = builder.Build();
 
@@ -38,6 +47,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+//app.UseMvc();
 
 app.MapControllerRoute(
     name: "default",
