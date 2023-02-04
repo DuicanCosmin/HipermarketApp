@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HipermarketApp.Controllers
 {
-    [Authorize]
+    [Authorize ("Admin,Product officer")]
     public class CategoriesController : Controller
     {
         private readonly HipermarketAppContext _context;

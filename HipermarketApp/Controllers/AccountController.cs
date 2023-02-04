@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HipermarketApp.Controllers
 {
-    [AllowAnonymous]
+
     public class AccountController : Controller
     {
   
@@ -21,6 +21,7 @@ namespace HipermarketApp.Controllers
         }
 
         [HttpGet]
+        [Authorize (Roles = "Admin")]
         public IActionResult Index()
         {
             return View();
@@ -64,6 +65,7 @@ namespace HipermarketApp.Controllers
         }
 
         [HttpGet]
+
         public IActionResult Login()
         {
             return View();
@@ -93,13 +95,14 @@ namespace HipermarketApp.Controllers
             return View(model);
         }
 
-        //[Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult CreateRole()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task< IActionResult> CreateRole(CreateRoleViewModel model)
         {
@@ -127,6 +130,7 @@ namespace HipermarketApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult ListRoles()
         {
             var roles = _roleManager.Roles;
@@ -134,6 +138,7 @@ namespace HipermarketApp.Controllers
             return View(roles);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult>EditRole (string id)
         {
@@ -163,7 +168,7 @@ namespace HipermarketApp.Controllers
                 return View(model);
             }
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
@@ -198,7 +203,7 @@ namespace HipermarketApp.Controllers
 
 
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditUsersInRole(string roleId)
         {
@@ -237,8 +242,9 @@ namespace HipermarketApp.Controllers
             return View(model);
         }
 
-
+        
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> model, string roleId)
         {
             var role = await _roleManager.FindByIdAsync(roleId);
@@ -281,8 +287,9 @@ namespace HipermarketApp.Controllers
         }
 
 
-
+       
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult ListUsers()
         {
             var roles = _userManager.Users;
@@ -291,6 +298,7 @@ namespace HipermarketApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -301,16 +309,17 @@ namespace HipermarketApp.Controllers
                 return View("NotFound");
             }
 
-            var userClaims = await _userManager.GetClaimsAsync(user);
+            //var userClaims = await _userManager.GetClaimsAsync(user);
 
             var userRoles = await _userManager.GetRolesAsync(user);
 
 
             var model = new EditUserViewModel();
 
+            model.Id = id;
             model.UserName = user.UserName;
             model.Email = user.Email;
-            model.Claims = userClaims.Select(c => c.Value).ToList();
+            //model.Claims = userClaims.Select(c => c.Value).ToList();
             model.Roles = userRoles.ToList();
 
             return View(model);
@@ -318,5 +327,84 @@ namespace HipermarketApp.Controllers
         }
 
 
+        //public IActionResult ManageUserRoles(string id)
+        //{
+        //    return View();
+
+        //}
+        
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ManageUserRoles(string userId)
+        {
+            ViewBag.userId = userId;
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View("NotFound");
+            }
+
+            var model = new List<UserRolesViewModel>();
+
+
+
+            foreach (var role in _roleManager.Roles.ToList())
+            {
+                var userRolesViewModel = new UserRolesViewModel
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name
+                };
+                
+                if (await _userManager.IsInRoleAsync(user, role.Name))
+                {
+                    userRolesViewModel.IsSelected = true;
+                }
+                else
+                {
+                    userRolesViewModel.IsSelected = false;
+                }
+
+                model.Add(userRolesViewModel);
+            }
+
+            return View(model);
+        }
+        
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View("NotFound");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var result = await _userManager.RemoveFromRolesAsync(user, roles);
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Cannot remove user existing roles");
+                return View(model);
+            }
+
+            result = await _userManager.AddToRolesAsync(user,
+                model.Where(x => x.IsSelected).Select(y => y.RoleName));
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Cannot add selected roles to user");
+                return View(model);
+            }
+
+            return RedirectToAction("EditUser", new { Id = userId });
+        }
     }
 }

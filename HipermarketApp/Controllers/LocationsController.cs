@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HipermarketApp.Controllers
 {
-    [Authorize]
+    [Authorize("Admin,Stock officer")]
     public class LocationsController : Controller
     {
         private readonly HipermarketAppContext _context;

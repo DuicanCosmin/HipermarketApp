@@ -15,7 +15,7 @@ namespace HipermarketApp.ViewModels
         public string Email { get; set; }
 
 
-        public List<string> Claims { get; set; } = new();
+        //public List<string> Claims { get; set; } = new();
 
         public List<string> Roles { get; set; } = new ();
     }

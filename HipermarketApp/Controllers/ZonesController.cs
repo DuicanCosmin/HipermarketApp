@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HipermarketApp.Controllers
 {
-    [Authorize]
+    [Authorize("Admin,Supplier officer")]
     public class ZonesController : Controller
     {
         private readonly HipermarketAppContext _context;
