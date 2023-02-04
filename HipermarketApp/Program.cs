@@ -18,7 +18,7 @@ builder.Services.AddIdentity<IdentityUser,IdentityRole>(options =>
                                          options.SignIn.RequireConfirmedAccount = false;
                                          options.Password.RequiredLength = 8;
                                          options.Password.RequireNonAlphanumeric = false;
-                                         }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders(); 
+                                         }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders().AddRoles<IdentityRole>(); 
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
 //builder.Services.AddIdentity<IdentityUser, IdentityRole>()
