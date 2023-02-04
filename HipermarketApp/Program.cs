@@ -8,7 +8,7 @@ builder.Services.AddDbContext<HipermarketAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("HipermarketAppContext") ?? throw new InvalidOperationException("Connection string 'HipermarketAppContext' not found.")));
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContext");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
